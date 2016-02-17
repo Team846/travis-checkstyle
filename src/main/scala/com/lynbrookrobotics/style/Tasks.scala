@@ -27,6 +27,12 @@ object Tasks {
     val files = pr.getFiles(repo, prNumber).map(f => f.getFilename -> f).toMap
     val lastCommit = pr.getCommits(repo, prNumber).last
 
+    pr.getComments(repo, prNumber).foreach { comment =>
+      if (comment.getUser.getLogin == "funky-bot") {
+        pr.deleteComment(repo, comment.getId)
+      }
+    }
+
     val checkstyleXML = XML.loadFile(sbt.Keys.target.value / "checkstyle-report.xml")
 
     checkstyleXML.child.filter(_.label == "file").map { file =>
