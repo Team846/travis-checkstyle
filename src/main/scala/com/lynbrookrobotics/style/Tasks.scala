@@ -15,7 +15,7 @@ object Tasks {
     innerHeader.split('+').last.split(',').head.toInt
   }
 
-  private lazy val githubToken: String = Source.fromFile("style-bot-token.txt").getLines().next()
+  private lazy val githubToken :: user :: _ = Source.fromFile("style-bot-token.txt").getLines().toList
   private lazy val prNumber: Int = sys.env("TRAVIS_PULL_REQUEST").toInt
   private lazy val orgName: String = sys.env("TRAVIS_REPO_SLUG").split('/').head
   private lazy val repoName: String = sys.env("TRAVIS_REPO_SLUG").split('/').last
@@ -28,7 +28,7 @@ object Tasks {
     val lastCommit = pr.getCommits(repo, prNumber).last
 
     pr.getComments(repo, prNumber).foreach { comment =>
-      if (comment.getUser.getLogin == "funky-bot") {
+      if (comment.getUser.getLogin == user) {
         pr.deleteComment(repo, comment.getId)
       }
     }
