@@ -15,7 +15,8 @@ object Tasks {
     innerHeader.split('+').last.split(',').head.toInt
   }
 
-  private lazy val githubToken :: user :: _ = Source.fromFile("style-bot-token.txt").getLines().toList
+  private lazy val githubToken = sys.env("CHECKSTYLE_BOT_TOKEN")
+  private lazy val user = sys.env("CHECKSTYLE_BOT_USER")
   private lazy val prNumber: Int = sys.env("TRAVIS_PULL_REQUEST").toInt
   private lazy val orgName: String = sys.env("TRAVIS_REPO_SLUG").split('/').head
   private lazy val repoName: String = sys.env("TRAVIS_REPO_SLUG").split('/').last
