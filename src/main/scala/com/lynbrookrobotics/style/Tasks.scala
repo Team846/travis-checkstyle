@@ -15,8 +15,8 @@ object Tasks {
     innerHeader.split('+').last.split(',').head.toInt
   }
 
-  private lazy val githubToken = sys.env("CHECKSTYLE_BOT_TOKEN")
-  private lazy val user = sys.env("CHECKSTYLE_BOT_USER")
+  private lazy val githubToken = sys.env("SCALASTYLE_BOT_TOKEN")
+  private lazy val user = sys.env("SCALASTYLE_BOT_USER")
   private lazy val prNumber: Int = sys.env("TRAVIS_PULL_REQUEST").toInt
   private lazy val orgName: String = sys.env("TRAVIS_REPO_SLUG").split('/').head
   private lazy val repoName: String = sys.env("TRAVIS_REPO_SLUG").split('/').last
@@ -34,7 +34,7 @@ object Tasks {
       }
     }
 
-    val checkstyleXML = XML.loadFile(sbt.Keys.target.value / "checkstyle-report.xml")
+    val checkstyleXML = XML.loadFile(sbt.Keys.target.value / "scalastyle-result.xml")
 
     checkstyleXML.child.filter(_.label == "file").map { file =>
       val filePath = (file \ "@name").text

@@ -1,10 +1,9 @@
 package com.lynbrookrobotics.style
 
-import com.etsy.sbt.checkstyle.Checkstyle
 import sbt._
 
-object TravisCheckStylePlugin extends AutoPlugin {
-  override def requires = plugins.JvmPlugin && Checkstyle
+object TravisScalaStylePlugin extends AutoPlugin {
+  override def requires = plugins.JvmPlugin
 
   val autoImport = Keys
 
