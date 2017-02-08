@@ -63,20 +63,23 @@ object Tasks {
           }._3
 
         file.child.filter(_.label == "error").foreach { error =>
-          val line = (error \ "@line").text.toInt
+          val lineString = (error \ "@line").text
 
-          if (line >= 0) {
-            val message = (error \ "@message").text
-            val severity = (error \ "@severity").text
+          if (lineString.nonEmpty) {
+            val line = lineString.toInt
+            if (line >= 0) {
+              val message = (error \ "@message").text
+              val severity = (error \ "@severity").text
 
-            val commentMessage = s"Style $severity: $message" // Style warning/error: ...
+              val commentMessage = s"Style $severity: $message" // Style warning/error: ...
 
-            diffIndexForSource.get(line).foreach { idx =>
-              val comment = new CommitComment().setPosition(idx).
-                                                setPath(path).
-                                                setCommitId(lastCommit.getSha)
-              comment.setBody(commentMessage)
-              pr.createComment(repo, prNumber, comment)
+              diffIndexForSource.get(line).foreach { idx =>
+                val comment = new CommitComment().setPosition(idx).
+                                                  setPath(path).
+                                                  setCommitId(lastCommit.getSha)
+                comment.setBody(commentMessage)
+                pr.createComment(repo, prNumber, comment)
+              }
             }
           }
         }
